@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>نظام العدّ للمرشحين</title>
+    <title>نظام العدّ للمرشحين (عرض فقط)</title>
     <style>
         body { 
             font-family: 'Arial', 'Segoe UI', Tahoma, sans-serif;
@@ -56,30 +56,10 @@
             flex-grow: 1;
             margin: 0 8px;
         }
-        button { 
-            background: #4CAF50; 
-            color: white; 
-            border: none; 
-            padding: 5px 10px; 
-            border-radius: 3px; 
-            font-size: 0.9em;
-            cursor: pointer;
-        }
-        button:active { 
-            background: #45a049; 
-        }
         .count {
             min-width: 20px;
             text-align: center;
             font-weight: bold;
-        }
-        .export { 
-            background: #2196F3; 
-            margin: 20px auto;
-            padding: 10px 20px;
-            font-size: 1em;
-            display: block;
-            border-radius: 5px;
         }
         h1 {
             text-align: center;
@@ -94,7 +74,7 @@
     </style>
 </head>
 <body>
-    <h1>نظام العدّ للمرشحين</h1>
+    <h1>نظام العدّ للمرشحين (وضع العرض فقط)</h1>
     
     <!-- القائمة 1 -->
     <div class="list" id="list1">
@@ -113,8 +93,6 @@
         <div class="list-title">القرار والتغيير</div>
         <div class="candidate-row" id="list3-candidates"></div>
     </div>
-    
-    <button class="export" onclick="exportData()">تصدير البيانات (Excel)</button>
     
     <script>
         // المرشحون
@@ -172,74 +150,31 @@
                 "يسرا احمد الخضر الزرزوري"
             ]
         ];
-        
-        // العدادات
+
+        // العدادات (ثابتة في هذا الوضع)
         let counts = {};
-        
-        // إنشاء واجهة المرشحين
+
+        // إعداد المرشحين
         function setupLists() {
             candidates.forEach((list, listIndex) => {
                 const listDiv = document.getElementById(`list${listIndex+1}-candidates`);
                 list.forEach((name, candidateIndex) => {
                     const key = `list${listIndex+1}_${candidateIndex}`;
-                    counts[key] = 0;
+                    counts[key] = 0; // ثابت: عرض فقط
                     
                     const item = document.createElement("div");
                     item.className = "candidate-item";
                     item.innerHTML = `
-                        <button onclick="increment('${key}')">+</button>
-                        <span class="count" id="count_${key}">0</span>
+                        <span class="count" id="count_${key}">${counts[key]}</span>
                         <span class="candidate-name">${name}</span>
                     `;
                     listDiv.appendChild(item);
                 });
             });
         }
-        
-        // زيادة العداد
-        function increment(key) {
-            counts[key]++;
-            document.getElementById(`count_${key}`).textContent = counts[key];
-        }
-        
-        // تصدير البيانات
-        function exportData() {
-            let csv = "القائمة,المرشح,عدد الأصوات\n";
-            candidates.forEach((list, listIndex) => {
-                const listName = document.querySelector(`#list${listIndex+1} .list-title`).textContent;
-                list.forEach((name, candidateIndex) => {
-                    const key = `list${listIndex+1}_${candidateIndex}`;
-                    csv += `"${listName}","${name}",${counts[key]}\n`;
-                });
-            });
-            
-            // تنزيل الملف
-            const blob = new Blob(["\uFEFF"+csv], { type: 'text/csv;charset=utf-8;' });
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = 'نتائج_العد.csv';
-            document.body.appendChild(a);
-            a.click();
-            document.body.removeChild(a);
-        }
-        
+
         // تهيئة الصفحة
         window.onload = setupLists;
-
-        // ===== VIEW-ONLY MODE SCRIPT =====
-        // Check if in view-only mode (?view in URL)
-        const urlParams = new URLSearchParams(window.location.search);
-        if(urlParams.has('view')) {
-            // Hide all buttons
-            document.querySelectorAll('button').forEach(btn => {
-                btn.style.display = 'none';
-            });
-            // Hide export button
-            document.querySelector('.export').style.display = 'none';
-            // Add "View Only" to title
-            document.title += " (عرض فقط)";
-        }
     </script>
 </body>
 </html>
