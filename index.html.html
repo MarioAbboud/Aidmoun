@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>نظام العدّ للمرشحين</title>
+    <!-- [PASTE THE FULL CSS FROM PREVIOUS CODE HERE] -->
+</head>
+<body>
+    <!-- [PASTE THE FULL BODY HTML FROM PREVIOUS CODE HERE] -->
+    <script>
+        // [PASTE THE FULL JAVASCRIPT FROM PREVIOUS CODE HERE]
+        
+        // NEW: Check if view-only mode
+        const urlParams = new URLSearchParams(window.location.search);
+        if(urlParams.has('view')) {
+            document.querySelectorAll('button').forEach(btn => {
+                btn.style.display = 'none';
+            });
+            document.querySelector('.export').style.display = 'none';
+            document.title += " (عرض فقط)";
+        }
+    </script>
+</body>
+</html>
