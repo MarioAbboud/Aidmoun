@@ -226,6 +226,20 @@
         
         // تهيئة الصفحة
         window.onload = setupLists;
+
+        // ===== VIEW-ONLY MODE SCRIPT =====
+        // Check if in view-only mode (?view in URL)
+        const urlParams = new URLSearchParams(window.location.search);
+        if(urlParams.has('view')) {
+            // Hide all buttons
+            document.querySelectorAll('button').forEach(btn => {
+                btn.style.display = 'none';
+            });
+            // Hide export button
+            document.querySelector('.export').style.display = 'none';
+            // Add "View Only" to title
+            document.title += " (عرض فقط)";
+        }
     </script>
 </body>
 </html>
